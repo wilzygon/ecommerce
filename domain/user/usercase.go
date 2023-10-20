@@ -1,0 +1,48 @@
+package user
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/wilzygon/ecommerce/model"
+	"golang.org/x/crypto/bcrypt"
+)
+
+type User struct {
+	storage Storage //puerto de salida
+}
+
+func New(s Storage) User {
+	return User{storage: s}
+}
+
+func (u User) Create(m *model.User) error {
+	ID, err := uuid.NewUUID()
+	if err != nil {
+		return fmt.Errorf("%s %w", "uuid.NewUUID()", err)
+	}
+
+	m.ID = ID
+	password, err := bcrypt.GenerateFromPassword([]byte(m.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return fmt.Errorf("%s %w", "bcrypt.GenerateFromPassword()", err)
+	}
+
+	m.Password = string(password)
+	if m.Details == nil {
+		m.Details = []byte("{}")
+	}
+
+	m.CreatedAt = time.Now().Unix()
+
+	//Vamos a guardar ese usuario en el Storage
+	//Este dominio User tiene un Storage
+	err = u.storage.Create(m) //Le enviamos el modelo que acabamos de utilizar
+	if err != nil {
+		return fmt.Errorf("%s %w", "storage.Create()", err)
+	}
+
+	m.Password = "" //Si no hubo error ya está guardado, y procedemos a limpiar
+	return nil
+}
