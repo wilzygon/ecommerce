@@ -46,3 +46,21 @@ func (u User) Create(m *model.User) error {
 	m.Password = "" //Si no hubo error ya está guardado, y procedemos a limpiar
 	return nil
 }
+
+func (u User) GetByEmail(email string) (model.User, error) {
+	user, err := u.storage.GetByEmail(email)
+	if err != nil {
+		return model.User{}, fmt.Errorf("%s %w", "storage.GetByEmail()", err)
+	}
+
+	return user, nil
+}
+
+func (u User) GetAll() (model.Users, error) {
+	users, err := u.storage.GetAll()
+	if err != nil {
+		return nil, fmt.Errorf("%s %w", "storage.GetAll()", err)
+	}
+
+	return users, nil
+}
