@@ -3,7 +3,7 @@ package user
 import "github.com/wilzygon/ecommerce/model"
 
 //UserCase es el puerto por donde se van a comunicar los datos de entrada
-type UserCase interface {
+type UseCase interface {
 	Create(m *model.User) error
 	GetByEmail(email string) (model.User, error)
 	GetAll() (model.Users, error)
