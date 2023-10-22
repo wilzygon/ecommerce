@@ -51,7 +51,7 @@ func (u User) GetByEmail(email string) (model.User, error) {
 		email,
 	)
 
-	return u.scanRow(row)
+	return u.scanRow(row, true)
 }
 
 func (u User) GetAll() (model.Users, error) {
@@ -65,8 +65,8 @@ func (u User) GetAll() (model.Users, error) {
 	defer rows.Close()
 
 	ms := model.Users{}
-	for rows.Next() {
-		m, err := u.scanRow(rows)
+	for rows.Next() { //Iteración sobre todos los registros que estamos obteniendo de la BD
+		m, err := u.scanRow(rows, false) //Indico que no quiero el password
 		if err != nil {
 			return nil, err
 		}
@@ -78,7 +78,8 @@ func (u User) GetAll() (model.Users, error) {
 
 }
 
-func (u User) scanRow(s pgx.Row) (model.User, error) {
+// scanRow toma cada uno de los registros de la base de datos y lo convierte en una estructura usuario
+func (u User) scanRow(s pgx.Row, WithPassword bool) (model.User, error) {
 	m := model.User{}
 	updatedAtNull := sql.NullInt64{}
 
@@ -96,6 +97,10 @@ func (u User) scanRow(s pgx.Row) (model.User, error) {
 	}
 
 	m.UpdatedAt = updatedAtNull.Int64
+
+	if !WithPassword {
+		m.Password = ""
+	}
 
 	return m, nil
 }
