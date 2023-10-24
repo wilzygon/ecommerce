@@ -6,14 +6,25 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/wilzygon/ecommerce/infrastructure/postgres"
 	"github.com/wilzygon/ecommerce/model"
 )
 
-var (
-	psqlInsert = `INSERT INTO users(id, email, password, details, created_at) 
-	VALUES($1, $2, $3, $4, $5)`
+const table = "users"
 
-	psqlGetAll = `SELECT id, email, password, details, created_at FROM users`
+var fields = []string{
+	"id",
+	"email",
+	"password",
+	"details",
+	"created_at",
+}
+var (
+	//psqlInsert = `INSERT INTO users(id, email, password, details, created_at) VALUES($1, $2, $3, $4, $5)`
+	psqlInsert = postgres.BuilSQLInsert(table, fields)
+
+	//psqlGetAll = `SELECT id, email, password, details, created_at FROM users`
+	psqlGetAll = postgres.BuildSQLSelect(table, fields)
 )
 
 type User struct {
@@ -35,6 +46,7 @@ func (u User) Create(m *model.User) error {
 		m.IsAdmin,
 		m.Details,
 		m.CreatedAt,
+		postgres.Int64ToNull(m.UpdatedAt),
 	)
 	if err != nil {
 		return err
