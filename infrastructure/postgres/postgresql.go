@@ -8,7 +8,7 @@ import (
 
 var ErrFieldsAreEmpty = "Los campos están vacios"
 
-func BuilSQLInsert(table string, fields []string) string {
+func BuildSQLInsert(table string, fields []string) string {
 	if len(fields) == 0 {
 		return ErrFieldsAreEmpty
 	}

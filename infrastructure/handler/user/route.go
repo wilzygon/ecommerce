@@ -8,7 +8,7 @@ import (
 )
 
 // newRoutes función principal de este route, que se instancie un route completo
-func newRoutes(e *echo.Echo, dbPool *pgxpool.Pool) {
+func NewRouter(e *echo.Echo, dbPool *pgxpool.Pool) {
 	h := buildHandler(dbPool) //Creamos el handler
 
 	adminRoutes(e, h) //registramos las rutas administrativas

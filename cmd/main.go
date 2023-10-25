@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/wilzygon/ecommerce/infrastructure/handler"
 	"github.com/wilzygon/ecommerce/infrastructure/handler/response"
 )
 
@@ -23,13 +24,12 @@ func main() {
 	e := newHTTP(response.HTTPErrorHandler)
 
 	//Instanciamos la conexión a la base de datos
-	dbpool, err := newDBConnection()
+	dbPool, err := newDBConnection()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	_ = dbpool
-
+	handler.InitRoutes(e, dbPool)
 	//Subimos nuestro Servicio al puerto configurado
 	err = e.Start(":" + os.Getenv("SERVER_PORT"))
 	if err != nil {

@@ -25,7 +25,7 @@ var fields = []string{
 }
 
 var (
-	psqlInsert = postgres.BuilSQLInsert(table, fields)
+	psqlInsert = postgres.BuildSQLInsert(table, fields)
 	psqlUpdate = postgres.BuildSQLUpdateByID(table, fields)
 	psqlDelete = postgres.BuildSQLDelete(table)
 	psqlGetAll = postgres.BuildSQLSelect(table, fields)

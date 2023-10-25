@@ -21,7 +21,7 @@ var fields = []string{
 }
 var (
 	//psqlInsert = `INSERT INTO users(id, email, password, details, created_at) VALUES($1, $2, $3, $4, $5)`
-	psqlInsert = postgres.BuilSQLInsert(table, fields)
+	psqlInsert = postgres.BuildSQLInsert(table, fields)
 
 	//psqlGetAll = `SELECT id, email, password, details, created_at FROM users`
 	psqlGetAll = postgres.BuildSQLSelect(table, fields)
