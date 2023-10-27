@@ -34,8 +34,8 @@ func (h handler) Login(c echo.Context) error {
 		if strings.Contains(err.Error(), "bcrypt.CompareHashAndPassword()") ||
 			errors.Is(err, sql.ErrNoRows) {
 			resp := model.MessageResponse{
-				Data:     "wrong user or password",
-				Messages: model.Responses{{Code: response.AuthError, Message: "wrong user or password"}},
+				Data:   "wrong user or password",
+				Errors: model.Responses{{Code: response.AuthError, Message: "wrong user or password"}},
 			}
 			return c.JSON(http.StatusBadRequest, resp)
 		}

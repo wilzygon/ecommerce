@@ -7,6 +7,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/labstack/echo/v4"
 	"github.com/wilzygon/ecommerce/infrastructure/handler/login"
+	"github.com/wilzygon/ecommerce/infrastructure/handler/paypal"
 	"github.com/wilzygon/ecommerce/infrastructure/handler/product"
 	"github.com/wilzygon/ecommerce/infrastructure/handler/purchaseorder"
 	"github.com/wilzygon/ecommerce/infrastructure/handler/user"
@@ -18,6 +19,7 @@ func InitRoutes(e *echo.Echo, dbPool *pgxpool.Pool) {
 	login.NewRouter(e, dbPool)
 
 	//P
+	paypal.NewRouter(e, dbPool)
 	product.NewRouter(e, dbPool)
 	purchaseorder.NewRouter(e, dbPool)
 
