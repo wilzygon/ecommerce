@@ -27,8 +27,8 @@ func (h handler) Create(c echo.Context) error {
 		return h.response.BindFailed(err)
 	}
 
-	userID, ok := c.Get("userID").(uuid.UUID)
-	if !ok {
+	userID, ok := c.Get("userID").(uuid.UUID) //Obtiene el userID que hemos pasado por el contexto
+	if !ok {                                  //del middleware que ha validado el token
 		return h.response.Error(c, "c.Get().(uuid.UUID)", errors.New("can´t parse uuid"))
 	}
 

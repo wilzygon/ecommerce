@@ -22,7 +22,7 @@ func BuildSQLInsert(table string, fields []string) string {
 	for _, v := range fields { //Recorremos cada uno de los campos
 		k++
 		args.WriteString(v)                         //Agregamos el nombre
-		args.WriteString(",")                       //una coma
+		args.WriteString(", ")                      //una coma
 		values.WriteString(fmt.Sprintf("$%d, ", k)) //y el valor
 	}
 

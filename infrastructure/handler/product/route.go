@@ -4,6 +4,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/labstack/echo/v4"
 	"github.com/wilzygon/ecommerce/domain/product"
+	"github.com/wilzygon/ecommerce/infrastructure/handler/middle"
 	productStorage "github.com/wilzygon/ecommerce/infrastructure/postgres/product"
 )
 
@@ -11,7 +12,9 @@ import (
 func NewRouter(e *echo.Echo, dbPool *pgxpool.Pool) {
 	h := buildHandler(dbPool)
 
-	adminRoutes(e, h)
+	authMiddleWare := middle.New()
+
+	adminRoutes(e, h, authMiddleWare.IsValid, authMiddleWare.IsAdmin)
 	publicRoutes(e, h)
 }
 
@@ -21,8 +24,8 @@ func buildHandler(dbPool *pgxpool.Pool) handler {
 }
 
 // adminRoutes handle the routes that requires a token and permissions to certain users
-func adminRoutes(e *echo.Echo, h handler) {
-	route := e.Group("/api/v1/admin/products")
+func adminRoutes(e *echo.Echo, h handler, middlewares ...echo.MiddlewareFunc) {
+	route := e.Group("/api/v1/admin/products", middlewares...)
 
 	route.POST("", h.Create)
 	route.PUT("/:id", h.Update)

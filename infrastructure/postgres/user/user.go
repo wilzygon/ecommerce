@@ -16,8 +16,10 @@ var fields = []string{
 	"id",
 	"email",
 	"password",
+	"is_admin",
 	"details",
 	"created_at",
+	"updated_at",
 }
 var (
 	//psqlInsert = `INSERT INTO users(id, email, password, details, created_at) VALUES($1, $2, $3, $4, $5)`
@@ -56,7 +58,7 @@ func (u User) Create(m *model.User) error {
 }
 
 func (u User) GetByEmail(email string) (model.User, error) {
-	query := psqlGetAll + "WHERE email = $1"
+	query := psqlGetAll + " WHERE email = $1"
 	row := u.db.QueryRow(
 		context.Background(),
 		query,

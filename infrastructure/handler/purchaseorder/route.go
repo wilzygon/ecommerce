@@ -4,6 +4,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/labstack/echo/v4"
 	"github.com/wilzygon/ecommerce/domain/purchaseorder"
+	"github.com/wilzygon/ecommerce/infrastructure/handler/middle"
 	purchaseorderStorage "github.com/wilzygon/ecommerce/infrastructure/postgres/purchaseorder"
 )
 
@@ -11,7 +12,9 @@ import (
 func NewRouter(e *echo.Echo, dbPool *pgxpool.Pool) {
 	h := buildHandler(dbPool)
 
-	privateRoutes(e, h)
+	authMiddleWare := middle.New()
+
+	privateRoutes(e, h, authMiddleWare.IsValid)
 }
 
 func buildHandler(dbPool *pgxpool.Pool) handler {
@@ -20,8 +23,8 @@ func buildHandler(dbPool *pgxpool.Pool) handler {
 }
 
 // privateRoutes handle the routes that requires a token
-func privateRoutes(e *echo.Echo, h handler) {
-	route := e.Group("/api/v1/private/purchase-orders")
+func privateRoutes(e *echo.Echo, h handler, middlewares ...echo.MiddlewareFunc) {
+	route := e.Group("/api/v1/private/purchase-orders", middlewares...)
 
 	route.POST("", h.Create)
 }
