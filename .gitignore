@@ -15,6 +15,7 @@ ecommerce
 
 #Environments
 .env
+datos_paypal.env
 # Test binary, built with `go test -c`
 *.test
 

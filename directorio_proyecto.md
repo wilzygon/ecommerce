@@ -1,1 +1,1 @@
-C:\Users\Wilson\Documents\Cursos_GO\ecommerce
+C:\Users\Wilson\Documents\Cursos_GO\ecommerce\cmd\
