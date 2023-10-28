@@ -12,13 +12,13 @@ import (
 
 // Invoice implements UseCase
 type Invoice struct {
-	storage Storage
-	//storageInvoiceDetailReport StorageInvoiceDetailReport
+	storage                    Storage
+	storageInvoiceDetailReport StorageInvoiceDetailReport
 }
 
 // New returns a new Invoice
-func New(s Storage) Invoice {
-	return Invoice{storage: s}
+func New(s Storage, sidr StorageInvoiceDetailReport) Invoice {
+	return Invoice{storage: s, storageInvoiceDetailReport: sidr}
 }
 
 // Create creates a model.Invoice
@@ -41,7 +41,7 @@ func (i Invoice) Create(po *model.PurchaseOrder) error {
 	return nil
 }
 
-/* func (i Invoice) GetByUserID(userID uuid.UUID) (model.InvoicesReport, error) {
+func (i Invoice) GetByUserID(userID uuid.UUID) (model.InvoicesReport, error) {
 	invoicesHead, err := i.storageInvoiceDetailReport.HeadsByUserID(userID)
 	if err != nil {
 		return nil, fmt.Errorf("invoice: %w", err)
@@ -81,7 +81,7 @@ func (i Invoice) GetAll() (model.InvoicesReport, error) {
 
 	return invoicesReport, nil
 }
-*/
+
 // invoiceFromPurchaseOrder recibe una orden de compra, nos devuelve un ecabezado, un detalle, y un error
 func invoiceFromPurchaseOrder(po *model.PurchaseOrder) (model.Invoice, model.InvoiceDetails, error) {
 	ID, err := uuid.NewUUID()

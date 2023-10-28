@@ -6,6 +6,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/labstack/echo/v4"
+	"github.com/wilzygon/ecommerce/infrastructure/handler/invoice"
 	"github.com/wilzygon/ecommerce/infrastructure/handler/login"
 	"github.com/wilzygon/ecommerce/infrastructure/handler/paypal"
 	"github.com/wilzygon/ecommerce/infrastructure/handler/product"
@@ -15,6 +16,9 @@ import (
 
 func InitRoutes(e *echo.Echo, dbPool *pgxpool.Pool) {
 	health(e)
+
+	//I
+	invoice.NewRouter(e, dbPool)
 	//L
 	login.NewRouter(e, dbPool)
 

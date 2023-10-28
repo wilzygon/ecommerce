@@ -1,6 +1,9 @@
 package user
 
 import (
+	"errors"
+
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/wilzygon/ecommerce/domain/user"
 	"github.com/wilzygon/ecommerce/infrastructure/handler/response"
@@ -31,6 +34,21 @@ func (h handler) Create(c echo.Context) error {
 
 	return c.JSON(h.responser.Created(m))
 	//return c.JSON(http.StatusCreated, m)
+}
+
+// MySelf returns the data from my profile
+func (h handler) MySelf(c echo.Context) error {
+	ID, ok := c.Get("userID").(uuid.UUID)
+	if !ok {
+		return h.responser.Error(c, "c.Get().(uuid.UUID)", errors.New("couldn´t parse the ID"))
+	}
+
+	u, err := h.useCase.GetByID(ID)
+	if err != nil {
+		return h.responser.Error(c, "useCase.GetWhere()", err)
+	}
+
+	return c.JSON(h.responser.Ok(u))
 }
 
 func (h handler) GetAll(c echo.Context) error {

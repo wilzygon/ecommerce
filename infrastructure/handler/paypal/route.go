@@ -23,7 +23,7 @@ func buildHandler(dbPool *pgxpool.Pool) handler {
 	//El adaptador de la órden de compra
 	purchaseOrderUseCase := purchaseorder.New(storagePurchaseOrder.New(dbPool))
 	//El adaptador de facturación
-	invoiceUseCase := invoice.New(storageInvoice.New(dbPool))
+	invoiceUseCase := invoice.New(storageInvoice.New(dbPool), nil)
 	//Crea un nuevo caso de uso de Paypal
 	useCase := paypal.New(purchaseOrderUseCase, invoiceUseCase)
 
