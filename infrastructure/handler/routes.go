@@ -10,6 +10,7 @@ import (
 	"github.com/wilzygon/ecommerce/infrastructure/handler/login"
 	"github.com/wilzygon/ecommerce/infrastructure/handler/paypal"
 	"github.com/wilzygon/ecommerce/infrastructure/handler/product"
+	"github.com/wilzygon/ecommerce/infrastructure/handler/proveedor"
 	"github.com/wilzygon/ecommerce/infrastructure/handler/purchaseorder"
 	"github.com/wilzygon/ecommerce/infrastructure/handler/user"
 )
@@ -25,6 +26,7 @@ func InitRoutes(e *echo.Echo, dbPool *pgxpool.Pool) {
 	//P
 	paypal.NewRouter(e, dbPool)
 	product.NewRouter(e, dbPool)
+	proveedor.NewRouter(e, dbPool)
 	purchaseorder.NewRouter(e, dbPool)
 
 	//U
